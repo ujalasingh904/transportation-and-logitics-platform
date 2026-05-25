@@ -1,4 +1,4 @@
-# transportation-and-logitics-platform
+# Transportation-and-logitics-platform
 
 # VELOX – Transportation & Logistics Platform Frontend
 
