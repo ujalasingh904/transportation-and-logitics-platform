@@ -1,249 +1,273 @@
-# Transportation & Logistics Web Application — Prompt
+
+# Transportation and Logistics Web App
 
 ---
 
-## Context and Role
+# Context and Role
 
-As a Full-Stack Developer specializing in enterprise-grade logistics systems, you are responsible for designing and implementing a high-performance **Transportation & Logistics Web Application**. The platform must use **Framer Motion** to deliver immersive, scroll-based storytelling animations while maintaining responsiveness, accessibility, and production-level quality across all modules.
+A new role begins: full-stack developer on a logistics web application built for real-world demands. As scrolling unfolds, narrative-style effects emerge through Framer Motion - smooth, intentional, never distracting. Each module works flawlessly regardless of device or screen size. Accessibility stays tightly woven into every layer without compromise. Performance remains steady under all conditions seen so far. Responsiveness is not an afterthought - it shapes structure from the start.
 
-The application must serve the complete logistics lifecycle — shipment booking, real-time tracking, fleet and driver management, route optimization, and analytics reporting — all presented through a modern, animated interface that guides both operators and end users through complex workflows with clarity and ease.
-
----
-
-## Objective
-
-Develop a complete full-stack Transportation & Logistics platform that:
-
-- Implements scroll-based storytelling animations using Framer Motion across all public and authenticated pages.
-- Delivers a modern, fully responsive UI with smooth page transitions and interactive data dashboards.
-- Provides a multi-step animated shipment booking flow with real-time cost estimation and order confirmation.
-- Includes role-based access for Admin, Dispatcher, Driver, and Customer — each with a tailored interface and strict permission boundaries.
-- Logs all shipment, driver, and fleet activity securely in MongoDB with structured audit trails.
-- Triggers email notifications to relevant users at every key shipment lifecycle event.
+This moves past just a dashboard - covering every stage of logistics operations. From booking shipments through to real-time tracking, managing drivers and vehicles comes next. Optimizing delivery paths follows naturally afterward. Reporting with data insights happens continuously throughout. The design ties each piece together quietly behind the scenes.
 
 ---
 
-## UI and Animation Requirements
+# Objective
 
-### Scroll-Based Storytelling
+## Full Stack Logistics Platform
 
-Implement scroll-triggered animations using Framer Motion across both the public landing pages and the authenticated application shell. All animations must use only `transform` and `opacity` — GPU-friendly properties that avoid layout recalculation and maintain 60fps across devices.
-
-Animate sections sequentially to create a narrative flow, including smooth transitions between:
-
-- **Hero Section** — Full-viewport animated headline using a word-by-word staggered text reveal, paired with a parallax background where logistics imagery scrolls slower than the foreground to create layered depth.
-- **Features Section** — Cards animate in one by one with staggered delays so the visitor's attention follows each platform capability in sequence.
-- **Statistics Section** — Animated number counters count up from zero as each metric enters the viewport, reinforcing the platform's operational scale.
-- **Testimonials Section** — Horizontal drag carousel with momentum-based swiping using Framer Motion's drag constraints for natural, touch-friendly browsing.
-- **Dashboard Pages** — Shared layout transitions between Dashboard, Fleet, Tracking, and Reports so navigation feels spatially continuous rather than like hard page reloads.
-
-Ensure animations:
-
-- Are performant and avoid layout thrashing by using only `transform` and `opacity`.
-- Use Framer Motion's `useInView` hook to trigger section animations precisely as they enter the viewport.
-- Do not block scroll performance — all animation callbacks must be passive and non-blocking.
-
-### Layout Requirements
-
-The application must include the following pages and sections:
-
-- **Landing Page** — Hero, Features, Statistics, Testimonials, and a "Get in Touch" call-to-action section.
-- **Dashboard** — KPI summary cards, recent shipments table, and fleet status overview.
-- **Shipment Management** — Multi-step booking wizard, shipment list with filters, and a live tracking map view.
-- **Fleet & Driver Management** — Vehicle card grid and driver profile list with status badges and assignment controls.
-- **Route Planning** — Interactive map with optimized polyline rendering and draggable waypoints.
-- **Analytics** — Chart-driven KPI reporting page with date range filtering.
-
-The layout must be:
-
-- Fully responsive across mobile (320px+), tablet (768px), and desktop (1280px+) using Tailwind CSS utility classes exclusively.
-- Accessible — all interactive elements must carry ARIA labels, `role` attributes, and full keyboard navigation support meeting **WCAG 2.1 AA** standards.
-- Optimized for performance — the authenticated dashboard shell must load in under 2 seconds; the public landing page must score **90+ on Lighthouse Performance**.
+- Each public and logged-in page features scroll-triggered animations built with Framer Motion
+- Smooth page transitions come through a responsive user interface, while live data dashboards update in real time. Interfaces adjust quickly as users navigate, ensuring seamless visual flow across views. Real-time metrics appear without manual refresh, keeping information current. Interaction feels fluid thanks to optimized rendering behind the scenes. Navigating between sections maintains performance, even with heavy data loads
+- A guided animation helps people book shipments step by step. Each stage updates pricing instantly as choices change. Visual cues show progress while input fields adapt dynamically. Users see estimated costs shift before confirming. Navigation flows forward or back with clear prompts at every turn
+- Four distinct roles exist: Admin, Dispatcher, Driver, yet also Customer - each operates within tightly defined permissions
+- MongoDB stores every detail about shipments, drivers, and fleet movements. Tracking each event clearly over time becomes possible through continuous logging. Activity records stay complete because the system captures inputs without gaps. Data flows into structured collections that preserve sequence and context. Every change finds its place in a timeline visible only in retrospect. Information builds up silently behind consistent updates. What emerges is a clear path through past operations
+- Each time a package hits a major milestone, an automatic message goes out. When movement occurs, updates follow without delay. At every checkpoint, emails deliver status details. After dispatch, communication begins immediately. During transit changes, alerts reach recipients promptly
 
 ---
 
-## Core Module Requirements
+# UI and Animation Requirements
 
-### Shipment Booking and Order Management
+## Scroll-Based Storytelling
 
-The booking flow must be implemented as a 3-step animated form wizard using Framer Motion's `AnimatePresence` with horizontal slide transitions between steps, giving users a clear sense of forward progression.
+Running entirely via Framer Motion, every animation relies solely on transform and opacity - properties kind to the GPU. These choices sidestep layout recalculations, enabling smooth 60fps performance across devices. Frame rates stay consistent, untouched by device limitations.
 
-- **Step 1 — Route Selection:** Origin and destination address autocomplete backed by a geocoding API, with the map preview updating live as the user types.
-- **Step 2 — Vehicle Selection:** Animated selection cards for motorcycle, van, truck, and heavy freight; cost and transit time recalculate dynamically based on distance and vehicle class on each selection.
-- **Step 3 — Confirmation:** Animated order summary with a full charge breakdown; a loading spinner runs on submit, followed by a confirmation modal with an animated checkmark, order ID, and estimated pickup time.
+### Animation Flow
 
-### Real-Time Shipment Tracking
-
-The tracking view must render a full-width interactive map using Leaflet.js or Mapbox GL JS with animated pulsing markers for each active shipment. A vertical status timeline — Pending → Picked Up → In Transit → Out for Delivery → Delivered — must fill in each completed step with a smooth Framer Motion layout animation.
-
-- Status change banners must slide in from the top of the map when the shipment state updates.
-- The frontend must poll the status endpoint every 10 seconds using a debounced interval that pauses automatically when the browser tab is hidden and resumes on focus.
-
-### Fleet and Vehicle Management
-
-The fleet view must display a grid of vehicle cards showing registration number, type, capacity, assigned driver, and a color-coded availability badge. Hovering lifts and shadows the card; clicking expands an inline detail panel without navigating away from the page.
-
-- Admins can add vehicles via a slide-in drawer form from the right edge of the screen and edit details inline with optimistic UI updates.
-- Deactivating a vehicle performs a soft-delete by setting `is_active: false` — no documents are permanently removed.
-- A summary row at the top displays animated counters for total, active, in-maintenance, and unassigned vehicles.
-
-### Driver Management
-
-Driver profiles must display full name, license number, license expiry date, assigned vehicle, and a color-coded status badge — **Available, On Duty, Off Duty, On Leave** — that transitions color smoothly when the status changes.
-
-- Dispatchers assign a driver to a shipment via a searchable dropdown populated only with currently Available drivers.
-- The assignment must update both the shipment document and the driver's status in a single MongoDB transaction to prevent race conditions.
-
-### Route Planning and Optimization
-
-Dispatchers must be able to select multiple pending shipments on the map and trigger a route optimization request. The backend calls OpenRouteService or Google Directions API with the driver's start location, delivery addresses, and time window constraints to calculate the most efficient delivery sequence.
-
-- The optimized route renders as an animated polyline that draws itself progressively using Framer Motion's `pathLength` SVG animation.
-- Dispatchers can drag waypoints to adjust the route, and the polyline reanimates to reflect each change in real time.
-
-### Role-Based Access Control
-
-Four roles must be enforced with strict permission boundaries across all frontend routes and backend endpoints:
-
-- **Admin** — full access to all modules, user management, and system configuration.
-- **Dispatcher** — shipment management, driver assignment, and route planning; no access to user management or system settings.
-- **Driver** — view own assigned shipments, update delivery status, and submit location updates only.
-- **Customer** — create shipment bookings and track own shipments only.
-
-### Analytics and Reporting Dashboard
-
-The analytics page must surface operational KPIs through interactive Recharts charts, each animated into view by Framer Motion on scroll and filterable by a configurable date range picker.
-
-- **Line chart** — total shipments per day over the selected date range.
-- **Donut chart** — animated shipment status distribution breakdown.
-- **Grouped bar chart** — average delivery time versus SLA target.
-- **Gauge chart** — fleet utilization rate as a percentage.
+- sections appear with scrolling forming a quiet sequence
+- A single word appears first, then another follows after a brief pause. As each term emerges separately, the backdrop shifts at reduced speed compared to the front layer. This mismatch in motion builds an effect of layered space. Depth forms through timing and movement differences across planes
+- One card shows up at a time, spaced by slight pauses. As the first fades out, the next begins to emerge. Each step pulls attention forward without rushing. Movement feels natural, not forced. The pace lets understanding build slowly. With every shift, focus stays locked on what matters. Time between transitions creates rhythm. What comes next arrives just when expected. Attention flows like water down a path shaped by timing. Details sink in because nothing crowds them
+- Zero marks the beginning for counters, rising only when a metric appears on screen. Each time a measurement scrolls into view, its tally advances without delay. Starting from nothing, these numbers climb steadily forward. The instant visibility occurs, counting begins immediately afterward. Metrics trigger updates just after they become visible. As soon as one comes into sight, increments follow right behind
+- Sliding through feedback feels smooth here. Momentum carries each move forward when you pull left or right. The scroll stops cleanly at edges, held by invisible boundaries built with Framer Motion. Touch swipes behave like physical motion - quick flicks glide, slow drags stay precise. Each card locks into place after movement ends. Drag limits prevent overshooting the last item. Movement responds naturally thanks to physics settings tuned behind the scenes
+- Sliding into Fleet from the Dashboard? It happens smoothly, almost like stepping through a doorway. Each section - Tracking, Reports - connects without breaks. Transitions avoid the jolt of page reloads. Movement flows, guided by continuity rather than clicks. One area leads to the next, framed as parts of a single space
 
 ---
 
-## Backend Requirements
+# Animation Principles Used Universally
 
-Implement a FastAPI backend organized into clearly separated modules for routes, models, database repositories, services, and background workers.
-
-- Expose versioned REST API endpoints under `/api/v1/` for every module — shipments, fleet, drivers, routes, analytics, contact, and auth.
-- Use **Motor** (async MongoDB driver) for all database operations so the event loop is never blocked by I/O, enabling high concurrency on a single process.
-- Secure all authenticated endpoints using **JWT tokens** decoded via a `get_current_user` FastAPI dependency, which attaches the user's role to every request context.
-- Apply **role enforcement** via a `require_role` dependency on each route that raises HTTP 403 if the authenticated user's role does not match the required permission level.
-- Hash all passwords with **bcrypt** before storage; never return the hashed password in any API response.
-- Store all environment-sensitive configuration — MongoDB URI, JWT secret, SMTP credentials, routing API keys — in a `.env` file loaded via Pydantic's `BaseSettings`.
-
-Securely log all activity in:
-
-- **MongoDB collections** — `shipments`, `vehicles`, `drivers`, `routes`, `users`, `notifications`, `contact_submissions` — with complete audit fields including `created_at`, `updated_at`, and actor user ID on every document.
-- **Structured application logs** — using `structlog` in JSON format; every request log line must include request ID, user ID, endpoint path, HTTP method, response status code, and latency in milliseconds.
-
-Trigger email notifications to relevant users using `aiosmtplib` via FastAPI's `BackgroundTasks` at the following events:
-
-- **Shipment booked** — confirmation to the customer with the tracking number and estimated pickup time.
-- **Shipment dispatched** — route details to both the customer and the assigned driver.
-- **Shipment delivered** — delivery confirmation to the customer with an optional feedback link.
-- **Shipment delayed** — delay alert to the assigned dispatcher.
-
-Use a secure email service (Gmail SMTP, SendGrid, or AWS SES) configured via environment variables. All email templates must be Jinja2 HTML files stored in `app/templates/email/` with a plaintext fallback for clients that do not render HTML.
-
-Prevent spam and abuse using:
-
-- **Rate limiting** via `slowapi` — unauthenticated endpoints capped at 20 requests per minute per IP address.
-- **CORS** restricted to the frontend's deployed domain only.
+- Opacity alone, alongside transform properties - these avoid forcing a browser to redo layout calculations
+- useInView triggers animations as sections appear on screen
+- Even when active, every callback remains unobtrusive - smooth scrolling continues without interruption
 
 ---
 
-## Data Processing Requirements
+# Layout Requirements
 
-Sanitize all inputs to prevent:
+## App Pages Required
 
-- **XSS attacks** — HTML tags and script content stripped from all string fields at the Pydantic model level before reaching business logic or the database.
-- **NoSQL injection** — all query parameters type-validated through Pydantic before being passed to Motor query builders so operator injection cannot reach MongoDB.
-
-Validate the following fields with strict server-side rules:
-
-- Email addresses — regex format validation enforced on both client and server independently.
-- Phone numbers — numeric format and length validation with country code awareness.
-- All required fields — missing required fields return a structured **422 Unprocessable Entity** response with a field-level error array.
-
-Ensure all API responses conform to a standard JSON envelope:
-
-- **Success** — `{ "success": true, "data": { ... }, "meta": { "page": 1, "total": 42 } }`
-- **Error** — `{ "success": false, "error": { "code": "...", "message": "...", "details": [...] } }`
+- A first look greets visitors right away, setting the scene up front. Following that, what the product does appears clearly through distinct highlights. Numbers back claims, offering proof in measurable form. Real voices follow, showing how others have found value. Reaching out wraps things up, inviting conversation near the end
+- On the dashboard, key performance indicators appear as individual cards. Following these, a table displays recently dispatched shipments. The fleet’s current condition sits toward the bottom, giving an overall snapshot of vehicle readiness
+- Getting shipments organized starts with a step-by-step booking tool. A searchable list lets users sort ongoing deliveries by criteria they pick. Movement updates appear on a constantly refreshed route display
+- A vehicle layout appears first - rows of cards showing each unit’s details. Following that, a series of driver profiles lines up beside it. Status markers sit at corners, giving quick updates on availability or condition. One view holds equipment, the other people who operate them. Badges change color based on current standing - active, idle, or under review. Information stays grouped but never merges into one block. Each element keeps its own space without overlapping others
+- Planning paths begins with an interactive map view. Lines appear dynamically as you adjust points across the surface. Waypoints stay movable during adjustments. Each segment redraws automatically when shifting markers. Navigation structure updates smoothly alongside changes. Visual feedback continues throughout manipulation
+- Analytics Dashboard With Date Filters And Charts
 
 ---
 
-## Output Requirements
+# Every Page Must Be
 
-- A fully animated, scroll-driven Transportation & Logistics web application covering all modules described above.
-- A functional multi-step shipment booking wizard with animated transitions and real-time cost estimation.
-- Live shipment tracking map with pulsing markers, status timeline, and 10-second polling.
-- Fleet and driver management dashboards with animated card grids, drawer forms, and optimistic updates.
-- Route optimization map view with self-drawing animated polylines and draggable waypoints.
-- Analytics dashboard with date-filtered Recharts visualizations animated into view on scroll.
-- Email notifications successfully triggered at all four shipment lifecycle events.
-- Confirmation message displayed to the user inside the booking wizard after successful submission.
-- Graceful inline error states shown for both client-side validation failures and server-returned errors, without full-page reloads or loss of form state.
+- Starting at 320px for phones, it adjusts smoothly up to tablets at 768px, then keeps working past 1280px on desktop screens - built only with Tailwind CSS. While small devices load it clearly, larger displays arrange content naturally, thanks to responsive rules coded directly into the design framework
+- Keyboard operation works throughout, aligning with WCAG 2.1 AA standards. Navigation does not require a mouse due to comprehensive key support. Screen reader access is improved through role definitions. Clarity improves where ARIA labels describe interactive elements
+- Under two seconds - that is how quickly the dashboard loads. A score above ninety appears when testing landing page performance via Lighthouse. Speed shows up right away, thanks to lean code handling
 
 ---
 
-## Error Handling and Documentation
+# Core Module Requirements
 
-Handle frontend errors gracefully:
+## Shipment Booking
 
-- Axios interceptors must centrally catch **401** (auto token refresh or redirect to login), **429** (toast notification explaining the rate limit), and **5xx** (generic error toast with a request ID for support tracing).
-- React Error Boundaries must catch page-level failures and render appropriate fallback UIs — a retry button for data load failures and a form error state for submission failures — rather than crashing the application.
+A sequence of three stages unfolds, each shifting sideways into view through smooth motion tied to AnimatePresence. Movement links one part to the next, guided by entrance and exit animations that slide across the screen. Each phase appears in order, replacing the prior with a lateral glide, creating flow without abrupt changes.
 
-Handle backend validation and runtime errors:
+### Step 1 — Route Selection
 
-- A global `@app.exception_handler` must catch all unhandled exceptions, log the full traceback via `structlog`, and return a sanitized 500 response that never exposes internal stack traces to the client.
-- All business logic exceptions must inherit from a `LogisticsBaseException` carrying a status code, error code, and human-readable message, serialized into the standard error envelope format.
-- Log backend failures with sufficient context — request ID, endpoint, user ID, and traceback — for effective production debugging.
+- Start by picking a route - typing triggers instant address suggestions powered by geocoding. As letters appear, the map adjusts without delay. With each keystroke, the preview shifts smoothly. Input refines itself through real-time feedback. Behind it all, location data reshapes the display. Changes flow naturally from search to visualization
 
-Document the following in a root-level `README.md`:
+### Step 2 — Vehicle Selection
 
-- **Folder structure** — every top-level directory described in one line for both the frontend and backend.
-- **Setup instructions** — step-by-step local development guide for the FastAPI backend (Python 3.11, venv creation, `pip install -r requirements.txt`, `.env` setup, DB seed script) and the React frontend (Node 18+, `npm install`, `.env.local` setup, `npm run dev`).
-- **Environment variable configuration** — complete table of every required variable with its purpose and an example value, covering both frontend and backend.
-- **Deployment steps** — Dockerization via `Dockerfile` and `docker-compose.yml`; recommended targets are Railway or Render for FastAPI and Vercel for React; staging versus production configuration differences documented clearly.
+- Next up - picking your vehicle. Slide through animated options: bike, van, truck, or big rig. Costs shift right away. Timing updates too, every single choice changes both. One click alters everything
+
+### Step 3 — Confirmation
+
+- After hitting submit, a spinning loader appears while the system calculates expenses. Cost details then display clearly below. A pop-up emerges afterward, featuring a moving green check symbol. An identifier for the purchase sits inside it. Time expected for collection shows there too. Each element arranges without clutter
 
 ---
 
-## Performance and Scalability
+# Real-Time Shipment Tracking
 
-- Optimize the React bundle using Vite code splitting — each page loads as a separate lazy chunk, and heavy dependencies like the map and chart libraries are split into dedicated vendor chunks so the initial bundle contains only landing and auth code.
-- Lazy-load all heavy components — map views, chart pages, and route planning — so they are only downloaded when the user navigates to that page.
-- Ensure animations do not degrade performance — all Framer Motion imports must be tree-shaken, importing only the specific `motion` components needed per file rather than the full library.
-- Support high traffic without API bottlenecks — all FastAPI route handlers must be `async` using Motor's async API; the event loop must never be blocked by database I/O.
-- Cache analytics aggregation query results for 5 minutes using Redis or an in-memory TTL cache to prevent repeated heavy MongoDB pipeline executions on every dashboard refresh.
-- Use proper debouncing for all user interactions that trigger API calls — address autocomplete, route recalculation, and search inputs must debounce at 300ms minimum before sending requests.
-- Ensure accessibility and SEO optimization — semantic HTML5 elements, Open Graph meta tags on the landing page, structured JSON-LD for the organization, and full keyboard navigability across all interactive components.
+- A map stretching edge to edge responds to clicks, using Leaflet.js or Mapbox GL JS, showing live pulses that mark ongoing deliveries. Each moving package appears as a glowing dot, shifting position in real time. Down one side, a narrow band displays progress through five phases - Pending, then Picked Up, followed by In Transit, later Out for Delivery, finally Delivered - with bars growing gradually between them, powered by Framer Motion.
+- Status Change Banners Slide In From Top Of Map On Shipment Update
+- Every 10 seconds, the frontend checks for updates - stopping only if the tab loses visibility. Once you return, it picks up again without delay. Hidden tabs suspend activity; active ones trigger renewal. When attention shifts back, syncing restarts instantly. Pauses happen silently during absence, resumes follow sight. Monitoring halts in background, restores upon return. As long as the tab stays visible, requests continue. If minimized, they freeze - until focus returns
 
 ---
 
-## Technology Stack
+# Fleet and Vehicle Management
 
-Use the following:
+- A single glance reveals each vehicle's plate, kind, space limit, who drives it, plus if it is free - marked by hue. As the pointer moves close, the container rises slightly off the surface. Selection opens further information right where it stands, avoiding jumps elsewhere. Detail stays within reach, embedded exactly where needed.
+- Sliding in from the right, admins handle vehicle additions or changes via a panel that previews edits instantly. Updates appear smoothly before confirmation, shaping responsiveness without delay. This method keeps adjustments visible while reducing waiting time. Interaction feels immediate due to live feedback during input
+- Turning off sets marks them as inactive rather than removing anything for good
+- At the top, a summary bar displays moving numbers for overall fleet size. Total count shifts smoothly alongside live updates. Active units appear next, their figures changing as status changes occur. Maintenance entries update without delay when vehicles enter service mode. Unassigned ones show separately, adjusting automatically as assignments shift
 
-**Frontend:**
-- React 18 with Vite as the build tool, React Router v6 for client-side routing, TanStack Query for all server state management.
-- Framer Motion v11 for all animations across landing pages and the authenticated application shell.
-- Tailwind CSS v3 with the official Forms and Typography plugins for the complete styling system.
-- React Hook Form with Zod for client-side form management and schema-based validation.
-- Axios with interceptor-based error handling for all HTTP client requests.
+---
 
-**Backend:**
-- FastAPI with Python 3.11 as the asynchronous API framework.
-- Motor as the async MongoDB driver for all database operations; Pydantic v2 for request/response data modeling and validation.
-- PyJWT and bcrypt for JWT authentication and password hashing.
-- aiosmtplib with Jinja2 HTML templates for the transactional email delivery system.
-- slowapi for request rate limiting; structlog for structured JSON application logging.
-- python-dotenv and Pydantic BaseSettings for environment variable management.
+# Driver Management
 
-**Database:**
-- MongoDB Atlas (`logistics_db`) as the primary database with the following collections: `users`, `shipments`, `vehicles`, `drivers`, `routes`, `notifications`, `contact_submissions`.
+- A driver's full name appears alongside their license details, including the number and expiration date. Instead of just listing data, the interface pairs each person with their designated vehicle. Status shows up through a shaded tag that shifts hue when conditions update. Whether marked Available, On Duty, Off Duty, or On Leave, the visual cue transforms gradually. Colors blend softly during any shift in availability state.
+- Dispatchers choose available drivers from a search dropdown
+- Inside one MongoDB transaction, assignments update driver status along with shipment details. This atomic process prevents race issues entirely. Partial changes cannot happen here. Every operation completes fully or not at all
 
-**Optional:**
-- Redis for analytics query caching and session storage in high-traffic deployments.
-- OpenRouteService or Google Directions API for route optimization calculations.
-- Mapbox GL JS or Leaflet.js for interactive map rendering.
+---
+
+# Smart Routes That Adjust As You Go
+
+- Starting from the driver’s initial position, dispatchers highlight several waiting deliveries directly on the interface map. Once selected, an automated routing query begins without using standard conjunctions between steps. Instead of manual planning, geographic data routes through external services like OpenRouteService or Google Directions API. Each stop, along with timing limits, feeds into the system for processing. Results return structured paths that account for real-world road networks. Optimization happens behind the scenes after user input ends.
+- A line begins to form across the map, shaped by data. Through Framer Motion, its length unfolds gradually, frame by frame. This path appears as an SVG element, drawn smoothly into view. Optimization guides its shape, calculated before display. Animation brings movement, making progress visible over time
+- Each time dispatchers move a waypoint, the path updates instantly. With every adjustment, the line redraws itself smoothly across the map. As positions shift, segments reconnect without delay. When a point gets repositioned, the route responds immediately. The moment a handler drags a marker, visuals refresh in real time
+
+---
+
+# Role-Based Access Control
+
+- Role Access Levels Admin full system control dispatcher manages deliveries driver handles assignments customer tracks orders analytics available
+
+---
+
+# Analytics Dashboard
+
+- A sequence of four Recharts visualizations appears gradually as the page scrolls, each one becoming visible at different moments. Their data shifts when users adjust a date-range selector positioned nearby. Motion timing differs per chart, creating slight delays between entries. Interaction happens smoothly, without abrupt changes or forced transitions. Each display updates independently once new dates are chosen
+- Line Chart Daily Shipment Volume Selected Period
+- Donut Chart Shipment Status Distribution Breakdown
+- Grouped Bar Chart Average Delivery Time Versus SLA Target
+- Gauge Chart Fleet Utilization Live Percentage
+
+---
+
+# Backend Requirements
+
+Underneath it all, FastAPI runs on Python 3.11, split cleanly into distinct parts: routes, models, repositories, services, alongside background workers. Every endpoint finds its home inside /api/v1/, tucked neatly beneath that prefix.
+
+## Core Setup
+
+- Moving through each query without pause, motor ensures operations run in the background. While tasks unfold independently, the main thread stays free. Even under load, responses progress outside the loop’s path. Without waiting, execution flows ahead. Behind scenes, work continues detached from interface timing. Progress happens step by step, yet never locks pace with incoming requests
+- JWT tokens secure routes using get_current_user
+- A require_role dependency blocks with HTTP 403 when roles don't match
+- Storing passwords securely begins with hashing each one using bcrypt. Never does the resulting hash show up in responses. This method keeps sensitive data out of reach during transmission. Protection happens automatically before anything gets saved. Through this process, exposure risk drops significantly
+- Inside the project, secret configuration data sits within a .env file. This setup works through Pydantic’s BaseSettings class. Settings pull directly from environment variables stored externally. The method keeps keys separate from code. Loading happens automatically during startup. Values are parsed safely at runtime. Configuration remains isolated, reducing risks across environments
+- Each file, each query, arrives wrapped in its own background. Details nest within entries, traceable through timestamps and metadata. Context sticks close, never lost in transit. Records unfold with purpose, linked by design. Nothing floats free of explanation
+
+---
+
+# MongoDB Audit Fields
+
+- Created at timestamps appear across MongoDB's shipments, vehicles, drivers, routes, users, notifications, and contact_submissions. Updated at markers track changes within each of these collections. Alongside them runs an identifier showing which user triggered the action. This trio supports accountability without relying on complex schemas. Each entry carries context about timing plus responsibility. While not enforced by default, such fields help reconstruct events later. Their presence simplifies auditing when issues emerge unexpectedly
+
+---
+
+# Structured Logging
+
+- Each structlog JSON log carries a request ID alongside user ID. Endpoint details appear with the HTTP method used during the call. Status codes show up right before latency values, measured fully in milliseconds. The data structure keeps these fields consistent across entries. Fields emerge in predictable order but without enforced schema locking. User context ties directly to individual requests through this setup. Latency sits at the end, reflecting total response time clearly
+
+---
+
+# Email Notification System
+
+- Email alerts trigger through aiosmtplib during four specific moments, handled by FastAPI’s background task system
+- Once the shipment gets booked, customers receive a message including the tracking ID along with pickup timing. Following dispatch, both customer and driver obtain status updates automatically. Upon delivery, the recipient confirms completion - optionally sharing feedback via provided link. In cases of delay, notifications route directly to the responsible dispatcher. Email templates use Jinja2 syntax stored under app/templates/email/, supporting plain-text alternatives when needed. Mail service setup allows integration with Gmail SMTP, SendGrid, or AWS SES using environment-based configuration.
+
+---
+
+# Abuse Prevention
+
+- SlowAPI rate limiting applies to unauthenticated endpoints with 20 requests per minute per IP
+- Frontend deployment limits CORS access strictly to its live environment address
+
+---
+
+# Data Processing
+
+## Input Sanitization
+
+- Stripped HTML tags and scripts from string fields via Pydantic models - XSS prevention happens early, well before data enters storage
+- Before any interaction with Motor, every query parameter gets checked against its expected type using Pydantic - blocking malformed inputs by design. Because of this layer, NoSQL injection stands no chance reaching MongoDB
+
+---
+
+# Validation Rules
+
+- Email validation happens separately in browser plus backend using pattern matching
+- Phone Numbers Validated by Country Code
+- When necessary information is absent, the system responds with a 422 Unprocessable Entity status. Errors are listed individually per field. Each issue appears in an array detailing what went wrong
+
+---
+
+# API Response Structure
+
+- Each API answer arrives inside an identical wrapper
+- Response confirms operation completed: success flag set to true. Data payload present within object structure. Metadata included alongside results. Page number appears as one inside meta section. Total count of items recorded at forty two
+- Error response structure includes a success flag set to false, followed by an error object containing code, message, and optional details list
+
+---
+
+# Error Handling
+
+## Frontend
+
+- When a 401 appears, Axios interceptors trigger - sending users to login or attempting token refresh. On hitting 429, they display a brief message about too many requests. If the server returns any 5xx error, a notification shows with the request identifier attached. These responses run automatically, without manual checks each time. Each status gets handled separately, tailored to its specific recovery path. No extra steps needed - the logic lives inside the interceptor setup. Errors resolve quietly unless user feedback is required. Redirects occur only when authentication state changes. The system stays reactive, adjusting based on response codes received. Handling happens behind the scenes, keeping components clean.
+- Besides handling component breakdowns, React Error Boundaries display fallback content like a refresh prompt when something fails mid-page. Rather than letting the whole view collapse, they reveal an alternative interface element - often a simple recovery option or message tied to form issues. When errors occur, these boundaries step in quietly, swapping out broken sections for usable cues. Instead of freezing or vanishing, the experience continues through subtle substitution. Recovery becomes part of the flow, guided by context-aware replacements
+
+---
+
+## Backend
+
+- Everything uncaught flows into a global @app.exception_handler. Through structlog, complete tracebacks get recorded silently behind the scenes. A cleaned-up 500 response emerges - stripped of internals - so clients see only what they should. No sensitive details slip through
+- Carried within each business logic mistake is a status identifier, an error tag, plus a clear explanation - rooted always in LogisticsBaseException. Though different in cause, they share this backbone structure without exception. From such faults emerges consistency: one parent class shapes their behavior. A message meant for people comes alongside codes built for systems. Not every flaw looks the same, yet all trace back to that single origin point
+- Each failure record holds a request ID along with an endpoint. A user ID appears in every entry instead of being optional. Traceback data shows up consistently within the log. The structure stays fixed across instances. Information flows line by line without gaps
+
+---
+
+# Documentation
+
+## The Root README Must Cover
+
+- Frontend and backend directories each with brief folder descriptions
+- Getting started - follow these steps carefully. First, prepare a virtual environment using Python 3.11; activate it before proceeding. Install dependencies through pip after activating venv. Configuration values go into a .env file at the project root. Run the seeding script once packages are in place. For the frontend, ensure Node.js version 18 or higher is available. Navigate to the React folder, then execute npm install to fetch client-side modules. Sensitive settings belong in .env.local, kept outside version control. Launch the development server via npm run dev when setup finishes.
+- Environment Variables All Listed With Purpose And Example
+- Putting software into operation involves creating a Dockerfile along with a docker-compose.yml configuration. Moving FastAPI applications happens through platforms like Railway or Render. React frontends go live using Vercel as hosting choice. Differences between testing environments and final release setups appear explained in straightforward notes
+
+---
+
+# Performance and Scalability
+
+- Vite divides code so every page becomes its own delayed segment. Instead of grouping everything, mapping tools and visualization libraries land in isolated dependency sections. The first download holds nothing beyond entry and login scripts
+- Only once someone moves to a section do map displays, graphs, or path tools begin loading. When navigation occurs, those elements start fetching data. Moving into the area triggers visual components to appear gradually. Accessing a page brings in maps and planning features step by step. As users advance, chart visuals and routing functions load behind the scenes
+- Because imports happen file by file, Framer Motion brings in just the motion features that particular module requires. Each script pulls only what it uses directly. This selective inclusion cuts unused parts automatically. One file might load a single animation tool while another grabs something different entirely. Specificity defines how much code enters at build time. Unused pieces stay behind. The process removes dead weight without extra steps. Efficiency emerges naturally from granular access
+- Across the system, asynchronous operations run continuously. Each FastAPI endpoint leverages Motor’s non-blocking methods. Because of this, the main thread stays free during any data query. The runtime avoids pauses when accessing storage
+- Every five minutes, analytics queries refresh their stored results through Redis. This prevents redundant processing of intense aggregations. Instead of recalculating each time, prior outputs are reused briefly. Short-term storage reduces load significantly. Temporary retention supports faster response cycles. Processing repeats only after expiration. Quick access to recent outcomes improves efficiency. Heavy computations pause when unnecessary. Brief delays in updates allow system breathing room. Frequent demands meet prebuilt answers
+- Debouncing Applied to All API Inputs with Minimum 300ms Delay
+- Starting off, SEO ties closely to how accessible a site is. Semantic HTML5 structures content so machines understand it better. Moving forward, Open Graph meta tags shape how links appear when shared. Then there is JSON-LD, which helps search engines grasp context right on the landing page. Keyboard navigation completes the picture by supporting users who avoid mice. Each piece connects, building both reach and usability
+
+---
+
+# Technology Stack
+
+## Frontend
+
+- React 18 with Vite React Router 6 and TanStack Query
+- Framer Motion v11 powers every animation
+- Styled components arrive through Tailwind CSS version 3, enhanced by extra tools handling form elements alongside text layout features
+- React Hook Form and Zod validation
+- Axios interceptors handle HTTP requests
+
+---
+
+## Backend
+
+- FastAPI with Python 3.11 Motor and Pydantic V2
+- PyJWT with bcrypt handles authentication and secure passwords
+- Using aiosmtplib alongside Jinja2 enables dynamic transactional emails through asynchronous sending and templated content generation
+- Rate limiting comes through slowapi. Meanwhile, structured logs appear via structlog in JSON format
+- Using python-dotenv with Pydantic BaseSettings for configuration
+
+---
+
+# Database
+
+- MongoDB Atlas logistics db with users shipments vehicles drivers routes notifications contact submissions
+
